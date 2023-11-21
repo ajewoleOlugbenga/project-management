@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import Task from "./Task"
+import { ProjectCtx } from "../store/Project-context";
 
-const SelectedProject = ({project, onDelete, onAddTask, onDeleteTask, tasks}) => {
+const SelectedProject = () => {
+
+  const {deleteProjects,project} = useContext(ProjectCtx)
 
     const formattedDate = new Date(project.DueDate).toLocaleDateString("en-US", {
         year: 'numeric',
@@ -13,12 +17,12 @@ const SelectedProject = ({project, onDelete, onAddTask, onDeleteTask, tasks}) =>
       <header className="pb-4 mb-4 border-b-2 border-stone-300">
         <div className="flex items-center justify-between ">
           <h1 className="text-3xl font-bold text-stone-600 mb-2">{project.Title}</h1>
-          <button onClick={onDelete} className="text-stone-600 hover:text-stone-950">Delete</button>
+          <button onClick={deleteProjects} className="text-stone-600 hover:text-stone-950">Delete</button>
         </div>
         <p className="mb-4 text-stone-400">{formattedDate}</p>
         <p className="text-stone-600 whitespace-pre-wrap">{project.Description}</p>
       </header>
-      <Task onAddProps={onAddTask} onDeleteProps={onDeleteTask} tasks={tasks}/>
+      <Task />
     </div>
   );
 };

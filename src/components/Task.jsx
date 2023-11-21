@@ -1,10 +1,15 @@
+import { useContext } from "react";
 import NewTask from "./NewTask";
+import { ProjectCtx } from "../store/Project-context";
 
-const Task = ({ onAddProps, onDeleteProps, tasks }) => {
+const Task = () => {
+
+  const { deleteTasks,tasks } = useContext(ProjectCtx)
+
   return (
     <section>
       <h2 className="text-2xl font-bold mb-4 text-stone-700">TASKS</h2>
-      <NewTask onAdd={onAddProps} />
+      <NewTask />
       {tasks.length === 0 && (
         <p className="text-stone-800 my-4">
           This project does not have any task yet
@@ -17,7 +22,7 @@ const Task = ({ onAddProps, onDeleteProps, tasks }) => {
               <span>{task.text}</span>
               <button
                 className="text-stone-700 hover:text-red-500"
-                onClick={() => onDeleteProps(task.id)}
+                onClick={() => deleteTasks(task.id)}
               >
                 Clear
               </button>

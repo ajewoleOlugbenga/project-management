@@ -3,6 +3,7 @@ import NewProject from "./components/NewProject";
 import NoProjectSelected from "./components/NoProjectSelected";
 import ProjectSideBar from "./components/ProjectSideBar";
 import SelectedProject from "./components/SelectedProject";
+import { ProjectCtx } from "./store/Project-context";
 
 const App = () => {
   const [projectState, setProjectState] = useState({
@@ -90,36 +91,37 @@ const App = () => {
     (project) => project.id === projectState.selectedProjectId
   );
 
-  let content = (
-    <SelectedProject
-      project={selectedProject}
-      onDelete={handleDeleteProject}
-      onAddTask={HandleAddTask}
-      onDeleteTask={handleDeleteTask}
-      tasks={projectState.tasks}
-      selectedProjectId={projectState.selectedProjectId}
-    />
-  );
+  let content = <SelectedProject />;
 
   if (projectState.selectedProjectId === null) {
     content = (
-      <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />
+      <NewProject />
     );
   } else if (projectState.selectedProjectId === undefined) {
-    content = <NoProjectSelected onAddProject={handleStartAddProject} />;
+    content = <NoProjectSelected />;
   }
 
+  const prjValue = {
+    projectId: projectState.selectedProjectId,
+    projects: projectState.projects,
+    tasks: projectState.tasks,
+    addTasks: HandleAddTask,
+    deleteProjects: handleDeleteProject,
+    deleteTasks: handleDeleteTask,
+    startAddingProject: handleStartAddProject,
+    cancelAddProject: handleCancelAddProject,
+    addProject: handleAddProject,
+    selectProject: handleSelectProject,
+    project: selectedProject,
+  };
+
   return (
-    <>
+    <ProjectCtx.Provider value={prjValue}>
       <main className="h-screen my-8 flex gap-8">
-        <ProjectSideBar
-          onAddProject={handleStartAddProject}
-          projects={projectState.projects}
-          onSelectProject={handleSelectProject}
-        />
+        <ProjectSideBar />
         {content}
       </main>
-    </>
+    </ProjectCtx.Provider>
   );
 };
 

@@ -1,8 +1,12 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import Input from "./Input";
 import Modal from "./Modal";
+import { ProjectCtx } from "../store/Project-context";
 
-const NewProject = ({ onAdd, onCancel }) => {
+const NewProject = () => {
+
+  const { addProject,cancelAddProject } = useContext(ProjectCtx)
+
   const Title = useRef();
   const Description = useRef();
   const DueDate = useRef();
@@ -22,7 +26,7 @@ const NewProject = ({ onAdd, onCancel }) => {
       return;
     }
 
-    onAdd({
+    addProject({
       Title: enteredTitle,
       Description: enteredDescription,
       DueDate: enteredDueDate,
@@ -42,7 +46,7 @@ const NewProject = ({ onAdd, onCancel }) => {
         <menu className="flex items-center justify-end gap-4 my-4">
           <button
             className="text-stone-800 hover:text-stone-950"
-            onClick={onCancel}
+            onClick={cancelAddProject}
           >
             Cancel
           </button>
